@@ -2,11 +2,20 @@ package com.example.focustime;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
+import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -15,50 +24,113 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class FocusFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FocusFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FocusFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FocusFragment newInstance(String param1, String param2) {
-        FocusFragment fragment = new FocusFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private static long focusBegin;
+    private static long focusStop;
+    private static long distractBegin;
+    private static long distractPause;
+    private static boolean focusOn;
+    private static boolean distractOn;
+    private static boolean distractFirstRun;
+    private static FloatingActionButton focusButton;
+    private static FloatingActionButton distractButton;
+    private static FloatingActionButton addTimeButton;
+    private static Chronometer focusMeter;
+    private static Chronometer distractMeter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_focus, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        focusMeter = getView().findViewById(R.id.focusChronometer);
+        distractMeter = getView().findViewById(R.id.distractChronometer);
+        focusButton = view.findViewById(R.id.focusActionButton);
+        focusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                focusOnClick();
+            }
+        });
+
+        distractButton = view.findViewById(R.id.distractActionButton);
+        distractButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                distractClick();
+            }
+        });
+
+        addTimeButton = view.findViewById(R.id.addTimeActionButton);
+        addTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addTimeClick();
+            }
+        });
+    }
+
+    private void focusOnClick(){
+        if(!focusOn){
+            focusBegin = SystemClock.elapsedRealtime();
+            focusMeter.setBase(focusBegin);
+            distractMeter.setBase(focusBegin);
+            focusMeter.start();
+            focusButton.setImageResource(R.drawable.ic_stop_black_24dp);
+            distractButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            focusOn = true;
+            distractFirstRun = true;
+        }else {
+            focusStop = SystemClock.elapsedRealtime();
+            focusMeter.stop();
+            distractMeter.stop();
+            focusButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            distractButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            focusOn = false;
+            distractOn = false;
+            distractPause = 0;
+        }
+    }
+
+    private void distractClick(){
+        if(!focusOn)
+            return;
+        if(distractFirstRun){
+            distractBegin = SystemClock.elapsedRealtime();
+            distractFirstRun = false;
+        }
+
+        if(!distractOn){
+            distractMeter.setBase(SystemClock.elapsedRealtime()+distractPause);
+            distractMeter.start();
+
+            distractButton.setImageResource(R.drawable.ic_pause_black_24dp);
+            distractOn = true;
+        }else {
+            distractPause = distractMeter.getBase() - SystemClock.elapsedRealtime();
+            distractMeter.stop();
+
+            distractButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            distractOn = false;
+        }
+    }
+
+    private void addTimeClick(){
+        if(!focusOn)
+            return;
+        long addTime = 1000;
+        if(!distractOn){
+            if(SystemClock.elapsedRealtime() + distractPause - addTime > focusBegin){
+                distractPause -= addTime;
+                distractMeter.setBase(SystemClock.elapsedRealtime()+distractPause);
+            }
+        } else if (distractMeter.getBase() - addTime > focusBegin){
+            distractMeter.setBase(distractMeter.getBase() - addTime);
+        }
     }
 }
