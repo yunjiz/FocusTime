@@ -23,20 +23,28 @@ public class HistoryRepository {
         return allHistories;
     }
 
-    public void insert(History history){
-        new insertAsyncTask(historyDAO).execute(history);
+    public void upsert(History history){
+        new upsertAsyncTask(historyDAO).execute(history);
     }
 
-    private static class insertAsyncTask extends AsyncTask<History, Void, Void> {
+    private static class upsertAsyncTask extends AsyncTask<History, Void, Void> {
         private HistoryDAO asyncTaskDao;
 
-        insertAsyncTask(HistoryDAO dao){
+        upsertAsyncTask(HistoryDAO dao){
             asyncTaskDao = dao;
         }
 
         @Override
         protected Void doInBackground(History... histories) {
-            asyncTaskDao.insert(histories[0]);
+            History newHistory = histories[0];
+            History exsitHistory = asyncTaskDao.findByDate(newHistory.getFocusDate());
+            if(exsitHistory != null){
+                exsitHistory.setFocusTime(exsitHistory.getFocusTime()+newHistory.getFocusTime());
+                exsitHistory.setDistractTime(exsitHistory.getDistractTime()+newHistory.getDistractTime());
+                asyncTaskDao.update(exsitHistory);
+            }else {
+                asyncTaskDao.insert(histories[0]);
+            }
             return null;
         }
     }

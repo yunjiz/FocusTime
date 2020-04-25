@@ -1,5 +1,7 @@
 package com.example.focustime;
 
+import com.example.focustime.util.Utility;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,5 +15,10 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void TestTimeFormat(){
+        assertEquals("2h46m40s", Utility.formatElapseTime(10000000));
     }
 }

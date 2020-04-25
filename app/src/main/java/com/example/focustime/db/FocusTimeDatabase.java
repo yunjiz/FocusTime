@@ -59,7 +59,7 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
 
             try {
                 History h1 = new History();
-                String date1 = "2020/4/25";
+                String date1 = "2020/4/23";
                 Date d1 = new SimpleDateFormat("yyyy/MM/dd").parse(date1);
                 h1.setFocusDate(d1);
                 historyList.add(h1);
@@ -82,12 +82,14 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            /*
             dao.deleteAll();
 
             for(int i = 0; i<historyList.size(); i++){
                 History history = historyList.get(i);
                 dao.insert(history);
             }
+            */
             return null;
         }
     }

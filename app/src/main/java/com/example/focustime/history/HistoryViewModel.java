@@ -20,7 +20,7 @@ public class HistoryViewModel extends AndroidViewModel {
 
     public LiveData<List<History>> getAllHistories() {return allHistories;}
 
-    public void insert(History history) {
-        historyRepository.insert(history);
+    public void upsert(History history) {
+        historyRepository.upsert(history);
     }
 }

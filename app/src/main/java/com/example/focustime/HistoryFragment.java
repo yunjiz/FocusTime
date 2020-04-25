@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,7 +53,7 @@ public class HistoryFragment extends Fragment {
         });
     }
 
-    public static void insertHistory(History history){
-        historyViewModel.insert(history);
+    public static void upsertHistory(History history){
+        historyViewModel.upsert(history);
     }
 }

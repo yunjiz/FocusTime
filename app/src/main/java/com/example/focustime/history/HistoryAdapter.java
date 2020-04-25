@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.focustime.R;
+import com.example.focustime.util.Utility;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
@@ -32,7 +34,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         if(historyList != null){
             History current = historyList.get(position);
-            holder.historyItemView.setText(String.valueOf(current.getFocusDate()));
+            String textFormat = "%s    %s    %s";
+            String focusTime = Utility.formatElapseTime(current.getFocusTime());
+            String distractTime = Utility.formatElapseTime(current.getDistractTime());
+            String datePattern = "MM/dd";
+            String dateValue = new SimpleDateFormat(datePattern).format(current.getFocusDate());
+            String textValue = String.format(textFormat, dateValue, focusTime, distractTime);
+            holder.historyItemView.setText(textValue);
         } else {
             holder.historyItemView.setText("No data");
         }
