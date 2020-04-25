@@ -13,9 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.example.focustime.history.History;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -94,6 +99,19 @@ public class FocusFragment extends Fragment {
             focusOn = false;
             distractOn = false;
             distractPause = 0;
+
+            try {
+                String pattern = "MM/dd/yyyy";
+                DateFormat df = new SimpleDateFormat(pattern);
+                Date today = new Date();
+                today.
+                today = df.parse(df.format(today));
+                History h = new History();
+                h.setFocusDate(today);
+                HistoryFragment.insertHistory(h);
+            }catch (Exception e){
+                System.out.print(e);
+            }
         }
     }
 

@@ -17,6 +17,9 @@ public interface HistoryDAO {
     @Update
     void update(History history);
 
+    @Query("DELETE FROM history_table")
+    void deleteAll();
+
     @Query("SELECT * FROM history_table WHERE focusDate = :date")
     History findByDate(Date date);
 

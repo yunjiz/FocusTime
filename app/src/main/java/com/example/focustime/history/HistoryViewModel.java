@@ -18,7 +18,7 @@ public class HistoryViewModel extends AndroidViewModel {
         allHistories = historyRepository.getAllHistories();
     }
 
-    LiveData<List<History>> getAllHistories() {return allHistories;}
+    public LiveData<List<History>> getAllHistories() {return allHistories;}
 
     public void insert(History history) {
         historyRepository.insert(history);
