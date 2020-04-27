@@ -12,13 +12,11 @@ public class HistoryUI {
 
     final String textFormat = "%s  %s  %s";
     final String datePattern = "MM/dd";
-    final long lowBar = 4*60*60*1000;
-    final long highBar = 8*60*60*1000;
-    final long ultraBar = 12*60*60*1000;
+
 
     public HistoryUI(History history) {
         this.text = createText(history);
-        this.color = createColor(history);
+        this.color = createColor(history, new Setting(4,8,12));
     }
 
     private String createText(History history){
@@ -28,13 +26,13 @@ public class HistoryUI {
         return String.format(textFormat, dateValue, focusTime, distractTime);
     }
 
-    private int createColor(History history){
+    private int createColor(History history, Setting setting){
         long validFocus = history.getFocusTime() - history.getDistractTime();
-        if(validFocus<lowBar){
+        if(validFocus<setting.getLowBar()){
             return Color.RED;
-        } else if(validFocus<highBar){
+        } else if(validFocus<setting.getHighBar()){
             return Color.GREEN;
-        } else if(validFocus<ultraBar){
+        } else if(validFocus<setting.getUltraBar()){
             return Color.BLUE;
         } else {
             return Color.MAGENTA;
@@ -47,5 +45,31 @@ public class HistoryUI {
 
     public String getText() {
         return text;
+    }
+
+    private class Setting {
+        long milliSec = 60*60*1000;
+
+        long lowBarHr = 4;
+        long highBarHr = 8;
+        long ultraBarHr = 12;
+
+        public Setting(long lowBarHr, long highBarHr, long ultraBarHr) {
+            this.lowBarHr = lowBarHr;
+            this.highBarHr = highBarHr;
+            this.ultraBarHr = ultraBarHr;
+        }
+
+        public long getLowBar() {
+            return lowBarHr * milliSec;
+        }
+
+        public long getHighBar() {
+            return highBarHr * milliSec;
+        }
+
+        public long getUltraBar() {
+            return ultraBarHr * milliSec;
+        }
     }
 }
