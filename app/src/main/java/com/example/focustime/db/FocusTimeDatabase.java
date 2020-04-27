@@ -62,19 +62,31 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
                 String date1 = "2020/4/23";
                 Date d1 = new SimpleDateFormat("yyyy/MM/dd").parse(date1);
                 h1.setFocusDate(d1);
+                h1.setFocusTime(10*3600*1000);
+                h1.setDistractTime(1*3600*1000);
                 historyList.add(h1);
 
                 History h2 = new History();
                 String date2 = "2020/4/20";
                 Date d2 = new SimpleDateFormat("yyyy/MM/dd").parse(date2);
                 h2.setFocusDate(d2);
+                h2.setFocusTime(6*3600*1000);
+                h2.setDistractTime(1*3600*1000);
                 historyList.add(h2);
 
                 History h3 = new History();
                 String date3 = "2020/4/27";
                 Date d3 = new SimpleDateFormat("yyyy/MM/dd").parse(date3);
                 h3.setFocusDate(d3);
+                h3.setFocusTime(2*3600*1000);
                 historyList.add(h3);
+
+                History h4 = new History();
+                String date4 = "2020/4/21";
+                Date d4 = new SimpleDateFormat("yyyy/MM/dd").parse(date4);
+                h4.setFocusDate(d4);
+                h4.setFocusTime(15*3600*1000);
+                historyList.add(h4);
             }catch (Exception e){
                 System.out.println(e);
             }
@@ -82,14 +94,16 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            boolean debug = false;
 
-            //dao.deleteAll();
-            /*
-            for(int i = 0; i<historyList.size(); i++){
-                History history = historyList.get(i);
-                dao.insert(history);
+            if(debug){
+                dao.deleteAll();
+
+                for(int i = 0; i<historyList.size(); i++){
+                    History history = historyList.get(i);
+                    dao.insert(history);
+                }
             }
-            */
             return null;
         }
     }

@@ -1,11 +1,13 @@
 package com.example.focustime.history;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,13 +36,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         if(historyList != null){
             History current = historyList.get(position);
-            String textFormat = "%s  %s  %s";
-            String focusTime = Utility.formatElapseTime(current.getFocusTime());
-            String distractTime = Utility.formatElapseTime(current.getDistractTime());
-            String datePattern = "MM/dd";
-            String dateValue = new SimpleDateFormat(datePattern).format(current.getFocusDate());
-            String textValue = String.format(textFormat, dateValue, focusTime, distractTime);
-            holder.historyItemView.setText(textValue);
+            HistoryUI ui = new HistoryUI(current);
+            holder.historyItemView.setText(ui.getText());
+            holder.historyItemView.setBackgroundColor(ui.getColor());
         } else {
             holder.historyItemView.setText("No data");
         }
