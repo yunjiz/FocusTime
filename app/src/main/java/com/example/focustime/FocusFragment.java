@@ -122,7 +122,7 @@ public class FocusFragment extends Fragment {
     private void addTimeClick(){
         long currentTime = SystemClock.elapsedRealtime();
         long distractBaseTime = distractMeter.getBase();
-        long addTime = 1000;
+        long addTime = 1000*60;
         long newBaseTime = fm.addDistractTime(addTime, currentTime, distractBaseTime);
         if(newBaseTime!=-1){
             distractMeter.setBase(newBaseTime);

@@ -34,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         if(historyList != null){
             History current = historyList.get(position);
-            String textFormat = "%s    %s    %s";
+            String textFormat = "%s  %s  %s";
             String focusTime = Utility.formatElapseTime(current.getFocusTime());
             String distractTime = Utility.formatElapseTime(current.getDistractTime());
             String datePattern = "MM/dd";

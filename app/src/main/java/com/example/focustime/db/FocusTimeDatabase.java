@@ -82,9 +82,9 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            /*
-            dao.deleteAll();
 
+            //dao.deleteAll();
+            /*
             for(int i = 0; i<historyList.size(); i++){
                 History history = historyList.get(i);
                 dao.insert(history);
