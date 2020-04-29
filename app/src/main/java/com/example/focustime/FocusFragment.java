@@ -128,4 +128,12 @@ public class FocusFragment extends Fragment {
             distractMeter.setBase(newBaseTime);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(fm.isFocusOn()){
+            focusOnClick();
+        }
+    }
 }
