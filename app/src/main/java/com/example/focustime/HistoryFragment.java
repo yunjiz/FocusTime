@@ -22,6 +22,11 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment {
     private static HistoryViewModel historyViewModel;
+    static SwitchPageFragmentListener listener;
+
+    public HistoryFragment(SwitchPageFragmentListener listener){
+        HistoryFragment.listener = listener;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class HistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
-        final HistoryAdapter historyAdapter = new HistoryAdapter(getActivity());
+        final HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), listener);
         recyclerView.setAdapter(historyAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -55,5 +60,9 @@ public class HistoryFragment extends Fragment {
 
     public static void upsertHistory(History history){
         historyViewModel.upsert(history);
+    }
+
+    public void onHistoryItemClick(){
+        listener.onSwitchToNextFragment();
     }
 }

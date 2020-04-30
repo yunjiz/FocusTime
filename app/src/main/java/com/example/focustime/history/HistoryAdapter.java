@@ -1,5 +1,6 @@
 package com.example.focustime.history;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.focustime.R;
+import com.example.focustime.SwitchPageFragmentListener;
 import com.example.focustime.util.Utility;
 
 import java.text.SimpleDateFormat;
@@ -20,9 +22,11 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private final LayoutInflater inflater;
     private List<History> historyList;
+    static SwitchPageFragmentListener listener;
 
-    public HistoryAdapter(Context context) {
+    public HistoryAdapter(Context context, SwitchPageFragmentListener listener) {
         inflater = LayoutInflater.from(context);
+        HistoryAdapter.listener = listener;
     }
 
     @NonNull
@@ -39,6 +43,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             HistoryUI ui = new HistoryUI(current);
             holder.historyItemView.setText(ui.getText());
             holder.historyItemView.setBackgroundColor(ui.getColor());
+            holder.historyItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onSwitchToNextFragment();
+                }
+            });
         } else {
             holder.historyItemView.setText("No data");
         }
