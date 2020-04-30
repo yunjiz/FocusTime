@@ -16,7 +16,7 @@ public class HistoryUI {
 
     public HistoryUI(History history) {
         this.text = createText(history);
-        this.color = createColor(history, new Setting(4,8,12));
+        this.color = createColor(history, new Setting(2,4,7));
     }
 
     private String createText(History history){

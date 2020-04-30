@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,5 +48,16 @@ public class MainActivity extends AppCompatActivity {
            public void onTabReselected(TabLayout.Tab tab) {
            }
        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        List<Fragment> flist = getSupportFragmentManager().getFragments();
+        for(int i = 0; i<flist.size(); i++){
+            Fragment f = flist.get(i);
+            if(f instanceof DiaryFragment && f.isVisible()){
+                ((DiaryFragment) f).doneEditing();
+            }
+        }
     }
 }

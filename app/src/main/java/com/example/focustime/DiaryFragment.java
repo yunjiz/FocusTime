@@ -5,12 +5,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.focustime.diary.Diary;
+import com.example.focustime.diary.DiaryViewModel;
 import com.example.focustime.focus.FocusManager;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +29,7 @@ import java.util.SimpleTimeZone;
  *
  */
 public class DiaryFragment extends Fragment {
+    private static DiaryViewModel diaryViewModel;
     static SwitchPageFragmentListener listener;
     Date date;
 
@@ -41,15 +48,34 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView diaryTex = view.findViewById(R.id.diaryText);
+        diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel.class);
+
+        TextView diaryText = view.findViewById(R.id.diaryText);
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy z");
-        diaryTex.setText(formatter.format(date));
+        diaryText.setText(formatter.format(date));
+
+        Diary diary = diaryViewModel.query(date);
+        if(diary == null){
+            diary = new Diary();
+            diary.setFocusDate(date);
+        }
+        final EditText editText = view.findViewById(R.id.diaryEdit);
+        editText.setText(diary.getContent());
+
         Button returnBtn = view.findViewById(R.id.button);
+        final Diary finalDiary = diary;
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finalDiary.setContent(editText.getText().toString());
+                diaryViewModel.upsert(finalDiary);
                 listener.onSwitchToNextFragment(null);
             }
         });
+    }
+
+    public void doneEditing(){
+        Button returnBtn = getView().findViewById(R.id.button);
+        returnBtn.callOnClick();
     }
 }

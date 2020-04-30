@@ -11,6 +11,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.focustime.diary.Diary;
+import com.example.focustime.diary.DiaryDAO;
 import com.example.focustime.history.History;
 import com.example.focustime.history.HistoryDAO;
 import com.example.focustime.util.Converters;
@@ -20,10 +22,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Database(entities = {History.class}, version = 1, exportSchema = false)
+@Database(entities = {History.class, Diary.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class FocusTimeDatabase extends RoomDatabase {
     public abstract HistoryDAO historyDAO();
+    public abstract DiaryDAO diaryDAO();
     private static FocusTimeDatabase INSTANCE;
 
     public static FocusTimeDatabase getDatabase(final Context context){
@@ -32,6 +35,7 @@ public abstract class FocusTimeDatabase extends RoomDatabase {
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             FocusTimeDatabase.class, "focus_time_database")
+                            .addMigrations(DatabaseMigration.MIGRATION_1_2)
                             .fallbackToDestructiveMigration()
                             .addCallback(roomDatabaseCallback)
                             .build();
