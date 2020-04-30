@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.focustime.history.History;
 
+import java.util.Date;
+
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
     FragmentManager fm;
@@ -15,10 +17,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private final class SwitchPageListener implements SwitchPageFragmentListener {
         @Override
-        public void onSwitchToNextFragment() {
+        public void onSwitchToNextFragment(Date date) {
             fm.beginTransaction().remove(mFragmentAtPos1).commit();
             if(mFragmentAtPos1 instanceof HistoryFragment){
-                mFragmentAtPos1 = new DiaryFragment(listener);
+                mFragmentAtPos1 = new DiaryFragment(listener, date);
             } else {
                 mFragmentAtPos1 = new HistoryFragment(listener);
             }

@@ -61,8 +61,4 @@ public class HistoryFragment extends Fragment {
     public static void upsertHistory(History history){
         historyViewModel.upsert(history);
     }
-
-    public void onHistoryItemClick(){
-        listener.onSwitchToNextFragment();
-    }
 }

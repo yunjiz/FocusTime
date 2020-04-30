@@ -39,14 +39,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         if(historyList != null){
-            History current = historyList.get(position);
+            final History current = historyList.get(position);
             HistoryUI ui = new HistoryUI(current);
             holder.historyItemView.setText(ui.getText());
             holder.historyItemView.setBackgroundColor(ui.getColor());
             holder.historyItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onSwitchToNextFragment();
+                    listener.onSwitchToNextFragment(current.getFocusDate());
                 }
             });
         } else {

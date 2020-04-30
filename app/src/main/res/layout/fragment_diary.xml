@@ -10,23 +10,27 @@
     <TextView
         android:id="@+id/diaryText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/hello_blank_fragment"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/diaryText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/diaryEdit"
         android:layout_centerVertical="true"
-        android:layout_marginStart="149dp"
-        android:layout_marginLeft="149dp"
-        android:layout_marginTop="-387dp"
-        android:onClick="onReturnToHistoryClick"
-        android:text="Button" />
+        android:layout_alignParentRight="true"
+        android:text="Done" />
+
+    <EditText
+        android:id="@+id/diaryEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/diaryText"
+        android:ems="20"
+        android:gravity="start|top"
+        android:inputType="textMultiLine" />
 
 </RelativeLayout>
