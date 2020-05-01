@@ -46,7 +46,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             holder.historyItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onSwitchToNextFragment(current.getFocusDate());
+                    listener.onSwitchToNextFragment(current);
                 }
             });
         } else {

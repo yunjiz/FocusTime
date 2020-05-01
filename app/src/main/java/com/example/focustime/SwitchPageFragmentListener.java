@@ -1,7 +1,7 @@
 package com.example.focustime;
 
-import java.util.Date;
+import com.example.focustime.history.History;
 
 public interface SwitchPageFragmentListener {
-    void onSwitchToNextFragment(Date date);
+    void onSwitchToNextFragment(History history);
 }

@@ -17,10 +17,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private final class SwitchPageListener implements SwitchPageFragmentListener {
         @Override
-        public void onSwitchToNextFragment(Date date) {
+        public void onSwitchToNextFragment(History history) {
             fm.beginTransaction().remove(mFragmentAtPos1).commit();
             if(mFragmentAtPos1 instanceof HistoryFragment){
-                mFragmentAtPos1 = new DiaryFragment(listener, date);
+                mFragmentAtPos1 = new DiaryFragment(listener, history);
             } else {
                 mFragmentAtPos1 = new HistoryFragment(listener);
             }

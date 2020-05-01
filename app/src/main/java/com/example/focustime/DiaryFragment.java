@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.focustime.db.DatabaseMigration;
 import com.example.focustime.diary.Diary;
 import com.example.focustime.diary.DiaryViewModel;
 import com.example.focustime.focus.FocusManager;
+import com.example.focustime.history.History;
+import com.example.focustime.util.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,11 +34,11 @@ import java.util.SimpleTimeZone;
 public class DiaryFragment extends Fragment {
     private static DiaryViewModel diaryViewModel;
     static SwitchPageFragmentListener listener;
-    Date date;
+    History history;
 
-    public DiaryFragment(SwitchPageFragmentListener listener, Date date) {
+    public DiaryFragment(SwitchPageFragmentListener listener, History history) {
         DiaryFragment.listener = listener;
-        this.date = date;
+        this.history = history;
     }
 
     @Override
@@ -50,9 +53,15 @@ public class DiaryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel.class);
 
+        Date date = history.getFocusDate();
+
         TextView diaryText = view.findViewById(R.id.diaryText);
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy z");
         diaryText.setText(formatter.format(date));
+
+        TextView diaryTimeText = view.findViewById(R.id.diaryTimeText);
+        String validTime = Utility.formatElapseTime(history.getFocusTime() - history.getDistractTime());
+        diaryTimeText.setText(validTime);
 
         Diary diary = diaryViewModel.query(date);
         if(diary == null){
