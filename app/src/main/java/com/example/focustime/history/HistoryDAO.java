@@ -25,4 +25,7 @@ public interface HistoryDAO {
 
     @Query("SELECT * FROM history_table ORDER BY focusDate desc")
     LiveData<List<History>> getAllHistories();
+
+    @Query("SELECT * FROM history_table WHERE focusDate >= :thisMonth AND focusDate < :nextMonth ORDER BY focusDate DESC")
+    LiveData<List<History>> getMonthlyHistories(Date thisMonth, Date nextMonth);
 }

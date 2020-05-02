@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.focustime.history.History;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -57,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
             Fragment f = flist.get(i);
             if(f instanceof DiaryFragment && f.isVisible()){
                 ((DiaryFragment) f).doneEditing();
+            } else if(f instanceof HistoryFragment && f.isVisible()){
+                ((HistoryFragment) f).toCurrentMonth();
+            } else if(f instanceof FocusFragment && f.isVisible()){
+                ((FocusFragment) f).resetTimer();
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.Date;
 import java.util.List;
 
 public class HistoryViewModel extends AndroidViewModel {
@@ -19,6 +20,10 @@ public class HistoryViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<History>> getAllHistories() {return allHistories;}
+
+    public LiveData<List<History>> getMonthlyHistories(Date date) {
+        return historyRepository.getMonthlyHistories(date);
+    }
 
     public void upsert(History history) {
         historyRepository.upsert(history);

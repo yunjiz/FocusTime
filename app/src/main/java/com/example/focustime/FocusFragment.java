@@ -136,4 +136,12 @@ public class FocusFragment extends Fragment {
             focusOnClick();
         }
     }
+
+    public void resetTimer(){
+        if(fm.isFocusOn())
+            return;
+
+        focusMeter.setBase(SystemClock.elapsedRealtime());
+        distractMeter.setBase(SystemClock.elapsedRealtime());
+    }
 }

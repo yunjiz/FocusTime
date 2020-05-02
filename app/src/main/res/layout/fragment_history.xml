@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HistoryFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageButton
+        android:id="@+id/prevMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_rew" />
+
     <TextView
         android:id="@+id/historyText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/prevMonth"
+        android:layout_toLeftOf="@id/nextMonth"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/hello_blank_fragment"
         android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/nextMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_media_ff" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHistory"
@@ -20,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_below="@id/historyText"
+        android:layout_marginTop="10dp"
         tools:listitem="@layout/recyclerview_history"
         />
 
