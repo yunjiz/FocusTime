@@ -1,5 +1,6 @@
 package com.example.focustime;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +72,12 @@ public class DiaryFragment extends Fragment {
         }
         final EditText editText = view.findViewById(R.id.diaryEdit);
         editText.setText(diary.getContent());
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        Activity activity = (Activity) getContext();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        editText.setMaxHeight(height/2);
+        editText.setText(String.valueOf(height));
 
         Button returnBtn = view.findViewById(R.id.button);
         final Diary finalDiary = diary;

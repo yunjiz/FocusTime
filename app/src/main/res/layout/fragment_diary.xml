@@ -33,6 +33,7 @@
         android:layout_marginTop="50dp"
         android:ems="20"
         android:gravity="start|top"
+        android:maxHeight="1dp"
         android:inputType="textMultiLine" />
 
     <Button
