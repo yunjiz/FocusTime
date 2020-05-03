@@ -90,7 +90,6 @@ public class DiaryFragment extends Fragment {
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         editText.setMaxHeight(height/2);
-        editText.setText(String.valueOf(height));
 
         Button returnBtn = view.findViewById(R.id.button);
         final Diary finalDiary = diary;

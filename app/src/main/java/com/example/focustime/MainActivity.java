@@ -114,9 +114,4 @@ public class MainActivity extends AppCompatActivity {
             item.setTitle("Night Mode");
         }
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-
-    }
 }
