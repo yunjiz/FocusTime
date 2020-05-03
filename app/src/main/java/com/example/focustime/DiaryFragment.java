@@ -35,12 +35,19 @@ import java.util.SimpleTimeZone;
  */
 public class DiaryFragment extends Fragment {
     private static DiaryViewModel diaryViewModel;
-    static SwitchPageFragmentListener listener;
+    public static SwitchPageFragmentListener listener;
     History history;
 
-    public DiaryFragment(SwitchPageFragmentListener listener, History history) {
-        DiaryFragment.listener = listener;
-        this.history = history;
+    public DiaryFragment(){
+        super();
+    }
+
+    public static DiaryFragment newInstance(History history){
+        Bundle args = new Bundle();
+        args.putParcelable("history", history);
+        DiaryFragment df = new DiaryFragment();
+        df.setArguments(args);
+        return df;
     }
 
     @Override
@@ -53,6 +60,12 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.history = getArguments().getParcelable("history");
+        //Optional by using getArguments();
+        if(savedInstanceState != null && this.history == null){
+            this.history = savedInstanceState.getParcelable("history");
+        }
+
         diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel.class);
 
         Date date = history.getFocusDate();
@@ -94,5 +107,10 @@ public class DiaryFragment extends Fragment {
     public void doneEditing(){
         Button returnBtn = getView().findViewById(R.id.button);
         returnBtn.callOnClick();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable("history", history);
     }
 }

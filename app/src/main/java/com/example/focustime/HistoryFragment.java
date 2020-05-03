@@ -28,11 +28,11 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment {
     private static HistoryViewModel historyViewModel;
-    static SwitchPageFragmentListener listener;
+    public static SwitchPageFragmentListener listener;
     static Date currentMonth = Utility.getCurrentMonth();
 
-    public HistoryFragment(SwitchPageFragmentListener listener){
-        HistoryFragment.listener = listener;
+    public HistoryFragment(){
+        super();
     }
 
     @Override
@@ -84,7 +84,6 @@ public class HistoryFragment extends Fragment {
                 historyAdapter.setHistoryList(histories);
             }
         });
-
     }
 
     public static void upsertHistory(History history){
@@ -112,5 +111,10 @@ public class HistoryFragment extends Fragment {
     public void toCurrentMonth(){
         currentMonth = Utility.getCurrentMonth();
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

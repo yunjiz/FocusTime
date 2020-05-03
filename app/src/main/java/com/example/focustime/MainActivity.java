@@ -1,9 +1,15 @@
 package com.example.focustime;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -18,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
            public void onTabReselected(TabLayout.Tab tab) {
            }
        });
+
     }
 
     @Override
@@ -65,5 +73,50 @@ public class MainActivity extends AppCompatActivity {
                 ((FocusFragment) f).resetTimer();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.setting_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.night_mode){
+            int nightMode = AppCompatDelegate.getDefaultNightMode();
+            if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                item.setTitle("Night Mode");
+                AppCompatDelegate.setDefaultNightMode
+                        (AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                item.setTitle("Day Mode");
+                AppCompatDelegate.setDefaultNightMode
+                        (AppCompatDelegate.MODE_NIGHT_YES);
+            }
+            // Recreate the activity for the theme change to take effect.
+            recreate();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        setDayNightTitle(menu.findItem(R.id.night_mode));
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void setDayNightTitle(MenuItem item){
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            item.setTitle("Day Mode");
+        } else {
+            item.setTitle("Night Mode");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+
     }
 }
