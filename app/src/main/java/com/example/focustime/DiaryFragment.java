@@ -17,16 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.focustime.db.DatabaseMigration;
 import com.example.focustime.diary.Diary;
 import com.example.focustime.diary.DiaryViewModel;
-import com.example.focustime.focus.FocusManager;
 import com.example.focustime.history.History;
 import com.example.focustime.util.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.SimpleTimeZone;
 
 
 /**

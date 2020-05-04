@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.focustime.focus.FocusManager;
 import com.example.focustime.history.History;
@@ -30,12 +31,14 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class FocusFragment extends Fragment {
-    private static FocusManager fm;
-    private static FloatingActionButton focusButton;
-    private static FloatingActionButton distractButton;
-    private static FloatingActionButton addTimeButton;
-    private static Chronometer focusMeter;
-    private static Chronometer distractMeter;
+    private FocusManager fm;
+    private FloatingActionButton focusButton;
+    private FloatingActionButton distractButton;
+    private FloatingActionButton addTimeButton;
+    private Chronometer focusMeter;
+    private Chronometer distractMeter;
+    private String focusMeterText;
+    private String distractMeterText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +50,6 @@ public class FocusFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fm = new FocusManager();
 
         focusMeter = getView().findViewById(R.id.focusChronometer);
         distractMeter = getView().findViewById(R.id.distractChronometer);
@@ -74,6 +76,37 @@ public class FocusFragment extends Fragment {
                 addTimeClick();
             }
         });
+
+        if (savedInstanceState != null && fm == null){
+            fm = savedInstanceState.getParcelable("focusManager");
+            focusMeterText = savedInstanceState.getString("focusMeterText");
+            distractMeterText = savedInstanceState.getString("distractMeterText");
+        }
+        if (fm == null){
+            fm = new FocusManager();
+        } else {
+            restoreMeters();
+        }
+    }
+
+    private void restoreMeters(){
+        if (fm.isFocusOn()){
+            focusButton.setImageResource(R.drawable.ic_stop_black_24dp);
+            focusMeter.setBase(fm.getFocusBeginTime());
+            focusMeter.start();
+            distractMeter.setBase(SystemClock.elapsedRealtime() + fm.getDistractPauseDelta());
+            if(fm.isDistractOn()){
+                distractButton.setImageResource(R.drawable.ic_pause_black_24dp);
+                distractMeter.start();
+            }else {
+                distractButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            }
+        } else {
+            focusButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            distractButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            focusMeter.setText(focusMeterText);
+            distractMeter.setText(distractMeterText);
+        }
     }
 
     private void focusOnClick(){
@@ -132,9 +165,6 @@ public class FocusFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(fm.isFocusOn()){
-            focusOnClick();
-        }
     }
 
     public void resetTimer(){
@@ -143,5 +173,17 @@ public class FocusFragment extends Fragment {
 
         focusMeter.setBase(SystemClock.elapsedRealtime());
         distractMeter.setBase(SystemClock.elapsedRealtime());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(fm.isDistractOn()){
+            fm.setDistractPauseDelta(distractMeter.getBase() - SystemClock.elapsedRealtime());
+        }
+
+        outState.putParcelable("focusManager", fm);
+        outState.putString("focusMeterText", focusMeter.getText().toString());
+        outState.putString("distractMeterText", distractMeter.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 }

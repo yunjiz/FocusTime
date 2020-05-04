@@ -1,5 +1,8 @@
 package com.example.focustime.focus;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.focustime.HistoryFragment;
 import com.example.focustime.history.History;
 
@@ -7,14 +10,51 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FocusManager {
-    private static long focusBeginTime;
-    private static long focusStopTime;
-    private static long distractBeginTime;
-    private static long distractPauseDelta;
-    private static boolean focusOn;
-    private static boolean distractOn;
-    private static boolean distractFirstRun;
+public class FocusManager implements Parcelable{
+    private long focusBeginTime;
+    private long focusStopTime;
+    private long distractBeginTime;
+    private long distractPauseDelta;
+    private boolean focusOn;
+    private boolean distractOn;
+    private boolean distractFirstRun;
+
+    public FocusManager(){
+    }
+
+    protected FocusManager(Parcel in) {
+        focusBeginTime = in.readLong();
+        focusStopTime = in.readLong();
+        distractBeginTime = in.readLong();
+        distractPauseDelta = in.readLong();
+        focusOn = in.readByte() != 0;
+        distractOn = in.readByte() != 0;
+        distractFirstRun = in.readByte() != 0;
+    }
+
+    public long getFocusBeginTime() {
+        return focusBeginTime;
+    }
+
+    public long getDistractPauseDelta() {
+        return distractPauseDelta;
+    }
+
+    public void setDistractPauseDelta(long distractPauseDelta) {
+        this.distractPauseDelta = distractPauseDelta;
+    }
+
+    public static final Creator<FocusManager> CREATOR = new Creator<FocusManager>() {
+        @Override
+        public FocusManager createFromParcel(Parcel in) {
+            return new FocusManager(in);
+        }
+
+        @Override
+        public FocusManager[] newArray(int size) {
+            return new FocusManager[size];
+        }
+    };
 
     public boolean isFocusOn(){
         return focusOn;
@@ -98,5 +138,21 @@ public class FocusManager {
             System.out.println(e);
         }
         return h;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(focusBeginTime);
+        parcel.writeLong(focusStopTime);
+        parcel.writeLong(distractBeginTime);
+        parcel.writeLong(distractPauseDelta);
+        parcel.writeByte((byte) (focusOn ? 1 : 0));
+        parcel.writeByte((byte) (distractOn ? 1 : 0));
+        parcel.writeByte((byte) (distractFirstRun ? 1 : 0));
     }
 }
